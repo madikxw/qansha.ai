@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qansha AI - Overview</title>
+    <title>Qansha AI - Barbershop Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
     <style>
@@ -155,7 +155,7 @@
         
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 24px;
             margin-bottom: 24px;
         }
@@ -175,20 +175,20 @@
             font-weight: 500;
         }
         
-        .balance-amount {
+        .revenue-amount {
             font-size: 36px;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 8px;
         }
         
-        .balance-subtitle {
+        .revenue-subtitle {
             font-size: 14px;
             color: #64748b;
             margin-bottom: 20px;
         }
         
-        .credit-card {
+        .location-card {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             color: white;
             border-radius: 16px;
@@ -197,7 +197,7 @@
             margin-bottom: 16px;
         }
         
-        .card-type {
+        .location-type {
             font-size: 12px;
             opacity: 0.9;
             margin-bottom: 4px;
@@ -205,25 +205,24 @@
             letter-spacing: 0.5px;
         }
         
-        .card-label {
+        .location-label {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 8px;
         }
         
-        .card-number {
+        .location-address {
             font-size: 14px;
             opacity: 0.8;
             margin-bottom: 16px;
-            font-family: 'Courier New', monospace;
         }
         
-        .card-amount {
+        .location-revenue {
             font-size: 24px;
             font-weight: 700;
         }
         
-        .card-logo {
+        .location-logo {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -235,6 +234,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 12px;
         }
         
         .card-navigation {
@@ -325,71 +325,102 @@
             font-weight: 600;
         }
         
-        .bill-item {
+        .expense-item {
             display: flex;
             align-items: center;
             padding: 16px 0;
             border-bottom: 1px solid #f1f5f9;
         }
         
-        .bill-item:last-child {
+        .expense-item:last-child {
             border-bottom: none;
         }
         
-        .bill-date {
+        .expense-icon {
+            width: 44px;
+            height: 44px;
             background: #f8fafc;
             border-radius: 12px;
-            padding: 12px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-right: 16px;
-            min-width: 60px;
+            font-size: 18px;
         }
         
-        .bill-day {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1e293b;
-            line-height: 1;
-        }
-        
-        .bill-month {
-            font-size: 11px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .bill-info {
+        .expense-info {
             flex: 1;
         }
         
-        .bill-name {
+        .expense-name {
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 4px;
         }
         
-        .bill-type {
+        .expense-category {
             font-size: 12px;
             color: #64748b;
             margin-bottom: 2px;
         }
         
-        .bill-last-charge {
+        .expense-period {
             font-size: 10px;
             color: #94a3b8;
         }
         
-        .bill-amount {
+        .expense-amount {
             font-weight: 700;
             color: #1e293b;
             font-size: 16px;
+        }
+        
+        .service-performance {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .service-performance:last-child {
+            border-bottom: none;
+        }
+        
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .service-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .service-count {
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        .service-bar {
+            width: 100%;
+            height: 6px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .service-fill {
+            height: 100%;
+            background: #22c55e;
+            border-radius: 3px;
+            transition: width 0.3s ease;
         }
         
         .bottom-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
+            margin-bottom: 24px;
         }
         
         .transactions-header {
@@ -651,6 +682,112 @@
             opacity: 0.7;
         }
         
+        /* AI Recommendations Section */
+        .ai-recommendations {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 20px;
+        }
+        
+        .ai-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .ai-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        
+        .recommendation-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .recommendation-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .recommendation-type {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .recommendation-type.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .recommendation-type.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .recommendation-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .recommendation-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .recommendation-impact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .impact-value {
+            font-weight: 600;
+            color: #22c55e;
+        }
+        
         /* Goal Input Modal */
         .goal-modal {
             display: none;
@@ -732,6 +869,12 @@
         }
         
         /* Responsive */
+        @media (max-width: 1400px) {
+            .dashboard-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+        
         @media (max-width: 1100px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
@@ -742,6 +885,10 @@
             }
             
             .breakdown-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .recommendations-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -766,6 +913,10 @@
             .search-input {
                 width: 100%;
             }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         .view-all {
@@ -786,54 +937,44 @@
             <div class="logo">Qansha AI</div>
             
             <nav>
-                <a href="#" class="nav-item active">
+                <a href="main.html" class="nav-item">
                     <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                      <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                     </svg>
-                    Overview
-                </a>
-                <a href="#" class="nav-item">
+                    Main Page
+                  </a>
+                
+                  <!-- Balances (твой balances.html / accounts.html — поставь своё имя файла) -->
+                  <a href="locations.html" class="nav-item">
                     <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                     </svg>
-                    Balances
-                </a>
-                <a href="#" class="nav-item">
+                    Locations & Expenses
+                  </a>
+                
+                  <!-- Bills -->
+                  <a href="bills.html" class="nav-item">
                     <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20V6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4V4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
-                    </svg>
-                    Transactions
-                </a>
-                <a href="#" class="nav-item">
-                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                      <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                     </svg>
                     Bills
-                </a>
-                <a href="#" class="nav-item">
-                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7,15H9C9,16.08 10.37,17 12,17C13.63,17 15,16.08 15,15C15,13.9 13.96,13.5 11.76,12.97C9.64,12.44 7,11.78 7,9C7,7.21 8.47,5.69 10.5,5.18V3H13.5V5.18C15.53,5.69 17,7.21 17,9H15C15,7.92 13.63,7 12,7C10.37,7 9,7.92 9,9C9,10.1 10.04,10.5 12.24,11.03C14.36,11.56 17,12.22 17,15C17,16.79 15.53,18.31 13.5,18.82V21H10.5V18.82C8.47,18.31 7,16.79 7,15Z"/>
+                  </a>
+
+                  <a href="upload.html" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <!-- Лоток -->
+                      <path d="M5 20h14v-2H5v2z"/>
+                      <!-- Стрелка вверх -->
+                      <path d="M12 3l-5 5h3v6h4V8h3l-5-5z"/>
                     </svg>
-                    Expenses
-                </a>
-                <a href="#" class="nav-item">
-                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"/>
-                    </svg>
-                    Goals
-                </a>
-                <a href="#" class="nav-item">
-                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.98C19.47,12.66 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.02L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.02C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.66 4.57,12.98L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.98Z"/>
-                    </svg>
-                    Settings
-                </a>
+                    Upload
+                  </a>
             </nav>
             
             <div class="user-profile">
-                <div class="user-avatar">UU</div>
+                <div class="user-avatar">BS</div>
                 <div>
-                    <div class="user-name">User Userov</div>
+                    <div class="user-name">Barbershop Owner</div>
                     <div class="user-role">View profile</div>
                 </div>
             </div>
@@ -842,7 +983,7 @@
         <div class="main-content">
             <div class="header">
                 <div class="greeting-section">
-                    <div class="greeting">Hello User</div>
+                    <div class="greeting">Hello Boss</div>
                     <div class="date" id="currentDate"></div>
                 </div>
                 
@@ -851,7 +992,7 @@
                         <svg class="search-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>
-                        <input type="text" class="search-input" placeholder="Search here">
+                        <input type="text" class="search-input" placeholder="Search transactions, services...">
                     </div>
                     <div class="notification">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -863,47 +1004,47 @@
             
             <div class="dashboard-grid">
                 <div class="card">
-                    <div class="card-title">Total Balance</div>
-                    <div class="balance-amount" id="totalSum">$42,400.00</div>
-                    <div class="balance-subtitle">All Accounts</div>
+                    <div class="card-title">Total Revenue</div>
+                    <div class="revenue-amount" id="totalRevenue">$15,840.00</div>
+                    <div class="revenue-subtitle">All Locations This Month</div>
                     
-                    <div class="credit-card">
-                        <div class="card-type">Account Type</div>
-                        <div class="card-label" id="accountType">Credit Card</div>
-                        <div class="card-number" id="accountId">**** **** **** 2598</div>
-                        <div class="card-amount" id="accountAmount">$25,000.00</div>
-                        <div class="card-logo">VISA</div>
+                    <div class="location-card">
+                        <div class="location-type">Location</div>
+                        <div class="location-label" id="locationName">Downtown Branch</div>
+                        <div class="location-address" id="locationAddress">123 Main Street, City Center</div>
+                        <div class="location-revenue" id="locationRevenue">$8,500.00</div>
+                        <div class="location-logo">BS</div>
                     </div>
                     
                     <div class="card-navigation">
-                        <button class="nav-button" id="prevAcc">← Previous</button>
+                        <button class="nav-button" id="prevLocation">← Previous</button>
                         <div style="display: flex; gap: 8px;">
                             <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></div>
                             <div style="width: 8px; height: 8px; border-radius: 50%; background: #e2e8f0;"></div>
                             <div style="width: 8px; height: 8px; border-radius: 50%; background: #e2e8f0;"></div>
                         </div>
-                        <button class="nav-button" id="nextAcc">Next →</button>
+                        <button class="nav-button" id="nextLocation">Next →</button>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <div class="card-title">Goals</div>
+                    <div class="card-title">Monthly Goal</div>
                     <div class="goal-content">
                         <div class="goal-header">
-                            <div class="goal-amount" id="goalTarget">$20,000.00</div>
+                            <div class="goal-amount" id="goalTarget">$18,000.00</div>
                             <button class="goal-edit" id="goalEditBtn">✏️</button>
                         </div>
-                        <div class="goal-period">May, 2023</div>
+                        <div class="goal-period">August, 2025</div>
                         
                         <div class="goal-chart">
                             <canvas id="goalChart" width="140" height="140"></canvas>
                         </div>
                         
                         <div class="goal-stats">
-                            <div class="achieved-amount" id="goalAchieved">$12,500.00</div>
+                            <div class="achieved-amount" id="goalAchieved">$15,840.00</div>
                             <div class="goal-stat">
                                 <span>🎯</span>
-                                <span>Target Achieved</span>
+                                <span>Target Progress</span>
                             </div>
                             <div class="goal-stat">
                                 <span>📊</span>
@@ -914,33 +1055,83 @@
                 </div>
                 
                 <div class="card">
-                    <div class="card-title">Upcoming Bill</div>
+                    <div class="card-title">Monthly Expenses</div>
                     
-                    <div id="billsList">
-                        <div class="bill-item">
-                            <div class="bill-date">
-                                <div class="bill-day">15</div>
-                                <div class="bill-month">May</div>
+                    <div id="expensesList">
+                        <div class="expense-item">
+                            <div class="expense-icon">⚡</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Electricity</div>
+                                <div class="expense-category">Utilities</div>
+                                <div class="expense-period">All Locations</div>
                             </div>
-                            <div class="bill-info">
-                                <div class="bill-name">Figma</div>
-                                <div class="bill-type">Figma - Monthly</div>
-                                <div class="bill-last-charge">Last Charge - 14 May, 2023</div>
-                            </div>
-                            <div class="bill-amount">$150</div>
+                            <div class="expense-amount">$320</div>
                         </div>
                         
-                        <div class="bill-item">
-                            <div class="bill-date">
-                                <div class="bill-day">16</div>
-                                <div class="bill-month">Jun</div>
+                        <div class="expense-item">
+                            <div class="expense-icon">🏠</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Rent</div>
+                                <div class="expense-category">Fixed Costs</div>
+                                <div class="expense-period">Monthly</div>
                             </div>
-                            <div class="bill-info">
-                                <div class="bill-name">Adobe</div>
-                                <div class="bill-type">Adobe - Yearly</div>
-                                <div class="bill-last-charge">Last Charge - 17 Jun, 2023</div>
+                            <div class="expense-amount">$2,400</div>
+                        </div>
+                        
+                        <div class="expense-item">
+                            <div class="expense-icon">🧴</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Hair Products</div>
+                                <div class="expense-category">Supplies</div>
+                                <div class="expense-period">Shampoos & Styling</div>
                             </div>
-                            <div class="bill-amount">$559</div>
+                            <div class="expense-amount">$450</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Popular Services</div>
+                    
+                    <div id="servicesList">
+                        <div class="service-performance">
+                            <div class="service-header">
+                                <div class="service-name">Haircut & Style</div>
+                                <div class="service-count">145 services</div>
+                            </div>
+                            <div class="service-bar">
+                                <div class="service-fill" style="width: 92%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="service-performance">
+                            <div class="service-header">
+                                <div class="service-name">Beard Trim</div>
+                                <div class="service-count">98 services</div>
+                            </div>
+                            <div class="service-bar">
+                                <div class="service-fill" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="service-performance">
+                            <div class="service-header">
+                                <div class="service-name">Hot Towel Shave</div>
+                                <div class="service-count">76 services</div>
+                            </div>
+                            <div class="service-bar">
+                                <div class="service-fill" style="width: 48%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="service-performance">
+                            <div class="service-header">
+                                <div class="service-name">Hair Wash</div>
+                                <div class="service-count">124 services</div>
+                            </div>
+                            <div class="service-bar">
+                                <div class="service-fill" style="width: 78%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -949,7 +1140,7 @@
             <div class="bottom-section">
                 <div class="card">
                     <div class="transactions-header">
-                        <div class="card-title">Recent Transaction</div>
+                        <div class="card-title">Recent Transactions</div>
                         <div class="view-all">View All</div>
                     </div>
                     
@@ -966,7 +1157,7 @@
                 
                 <div class="card">
                     <div class="stats-header">
-                        <div class="card-title">Statistics</div>
+                        <div class="card-title">Location Comparison</div>
                         <select class="period-select" id="periodSelect">
                             <option value="weekly">Weekly Comparison</option>
                             <option value="monthly">Monthly Comparison</option>
@@ -977,11 +1168,15 @@
                     <div class="chart-legend">
                         <div class="legend-item">
                             <div class="legend-color" style="background: #22c55e;"></div>
-                            <span>This week</span>
+                            <span>Downtown</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #64748b;"></div>
-                            <span>Last week</span>
+                            <div class="legend-color" style="background: #3b82f6;"></div>
+                            <span>Mall</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #8b5cf6;"></div>
+                            <span>Suburbs</span>
                         </div>
                     </div>
                     
@@ -989,10 +1184,25 @@
                         <canvas id="statChart"></canvas>
                     </div>
                     
-                    <div class="card-title" style="margin-bottom: 16px;">Expenses Breakdown</div>
+                    <div class="card-title" style="margin-bottom: 16px;">Service Revenue Breakdown</div>
                     <div class="breakdown-list" id="breakdownList">
                         <!-- Breakdown items will be populated by JS -->
                     </div>
+                </div>
+            </div>
+            
+            <!-- AI Recommendations Section -->
+            <div class="ai-recommendations">
+                <div class="ai-header">
+                    <div class="ai-icon">🤖</div>
+                    <div>
+                        <div class="ai-title">AI Business Insights</div>
+                        <div class="ai-subtitle">Personalized recommendations to grow your barbershop</div>
+                    </div>
+                </div>
+                
+                <div class="recommendations-grid" id="recommendationsGrid">
+                    <!-- Recommendations will be populated by JS -->
                 </div>
             </div>
         </div>
@@ -1001,8 +1211,8 @@
     <!-- Goal Modal -->
     <div class="goal-modal" id="goalModal">
         <div class="modal-content">
-            <div class="modal-title">Set Monthly Goal</div>
-            <input type="number" class="goal-input" id="goalInput" placeholder="Enter amount (e.g. 25000)">
+            <div class="modal-title">Set Monthly Revenue Goal</div>
+            <input type="number" class="goal-input" id="goalInput" placeholder="Enter amount (e.g. 18000)">
             <div class="modal-buttons">
                 <button class="btn btn-secondary" id="goalCancelBtn">Cancel</button>
                 <button class="btn btn-primary" id="goalSetBtn">Set Goal</button>
@@ -1011,64 +1221,140 @@
     </div>
 
     <script>
-        // Demo Data
-        const accounts = [
-            { id: '**** **** **** 2598', type: 'Credit Card', amount: 25000 },
-            { id: '**** **** **** 4412', type: 'Debit Card',  amount: 12000 },
-            { id: '**** **** **** 7721', type: 'Checking',    amount: 5400  }
+        // Demo Data for Barbershop
+        const locations = [
+            { 
+                name: 'Downtown Branch', 
+                address: '123 Main Street, City Center', 
+                revenue: 8500,
+                chairs: 4,
+                staff: 6
+            },
+            { 
+                name: 'Mall Location', 
+                address: '456 Shopping Mall, Level 2', 
+                revenue: 4800,
+                chairs: 3,
+                staff: 4
+            },
+            { 
+                name: 'Suburbs Branch', 
+                address: '789 Residential Area, Oak Street', 
+                revenue: 2540,
+                chairs: 2,
+                staff: 3
+            }
         ];
 
         const transactions = [
-            { id: 1, title: 'GTR 5',        subtitle: 'Gadget & Gear',  date: '2023-05-17', amount: 160,  type: 'expense', icon: '🏎️' },
-            { id: 2, title: 'Polo Shirt',   subtitle: 'XL fashions',    date: '2023-05-17', amount: 20,   type: 'expense', icon: '👕' },
-            { id: 3, title: 'Biriyani',     subtitle: 'Food Biriyani',  date: '2023-05-17', amount: 10,   type: 'expense', icon: '🍛' },
-            { id: 4, title: 'Taxi Fare',    subtitle: 'Uber',           date: '2023-05-17', amount: 12,   type: 'expense', icon: '🚗' },
-            { id: 5, title: 'Keyboard',     subtitle: 'Gadget & Gear',  date: '2023-05-17', amount: 22,   type: 'expense', icon: '⌨️' },
-            { id: 6, title: 'Order Payout', subtitle: 'Online Sales',   date: '2023-05-18', amount: 450,  type: 'revenue', icon: '💰' },
-            { id: 7, title: 'Freelance Work', subtitle: 'Design Project', date: '2023-05-18', amount: 800, type: 'revenue', icon: '💼' },
-            { id: 8, title: 'Coffee Shop',  subtitle: 'Starbucks',      date: '2023-05-16', amount: 5,    type: 'expense', icon: '☕' }
+            { id: 1, title: 'Haircut & Style',     subtitle: 'Downtown - Chair 1',  date: '2025-08-19', amount: 35,  type: 'revenue', icon: '✂️' },
+            { id: 2, title: 'Beard Trim',         subtitle: 'Mall - Chair 2',      date: '2025-08-19', amount: 20,  type: 'revenue', icon: '🧔' },
+            { id: 3, title: 'Hair Products',      subtitle: 'Product Purchase',    date: '2025-08-19', amount: 120, type: 'expense', icon: '🧴' },
+            { id: 4, title: 'Hot Towel Shave',    subtitle: 'Downtown - Chair 3',  date: '2025-08-19', amount: 45,  type: 'revenue', icon: '🔥' },
+            { id: 5, title: 'Electricity Bill',   subtitle: 'Monthly Utility',     date: '2025-08-18', amount: 320, type: 'expense', icon: '⚡' },
+            { id: 6, title: 'Premium Package',    subtitle: 'Suburbs - VIP',       date: '2025-08-18', amount: 85,  type: 'revenue', icon: '👑' },
+            { id: 7, title: 'Chair Maintenance',  subtitle: 'Equipment Service',   date: '2025-08-18', amount: 150, type: 'expense', icon: '🔧' },
+            { id: 8, title: 'Hair Wash',          subtitle: 'Mall - Chair 1',      date: '2025-08-17', amount: 15,  type: 'revenue', icon: '🚿' },
+            { id: 9, title: 'Styling Products',   subtitle: 'Gel & Pomade',        date: '2025-08-17', amount: 80,  type: 'expense', icon: '💇' },
+            { id: 10, title: 'Kids Haircut',      subtitle: 'Downtown - Special',  date: '2025-08-17', amount: 25,  type: 'revenue', icon: '👶' }
         ];
 
-        const upcomingBills = [
-            { due: '2023-05-15', vendor: 'Figma',  plan: 'Monthly', amount: 150 },
-            { due: '2023-06-16', vendor: 'Adobe',  plan: 'Yearly',  amount: 559 }
+        const expenses = [
+            { name: 'Electricity', category: 'Utilities', period: 'All Locations', amount: 320, icon: '⚡' },
+            { name: 'Rent', category: 'Fixed Costs', period: 'Monthly', amount: 2400, icon: '🏠' },
+            { name: 'Hair Products', category: 'Supplies', period: 'Shampoos & Styling', amount: 450, icon: '🧴' },
+            { name: 'Staff Salaries', category: 'Personnel', period: 'Monthly', amount: 8500, icon: '👥' },
+            { name: 'Equipment', category: 'Maintenance', period: 'Chairs & Tools', amount: 280, icon: '🔧' }
         ];
 
-        const series = {
-            weekly:  { 
-                labels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], 
-                current: [24,12,15,18,22,26,24], 
-                prev: [14,10,9,12,18,16,15],
-                title: ['This week', 'Last week']
+        const services = [
+            { name: 'Haircut & Style', count: 145, percentage: 92 },
+            { name: 'Beard Trim', count: 98, percentage: 65 },
+            { name: 'Hot Towel Shave', count: 76, percentage: 48 },
+            { name: 'Hair Wash', count: 124, percentage: 78 },
+            { name: 'Premium Package', count: 42, percentage: 28 }
+        ];
+
+        const locationPerformance = {
+            weekly: { 
+                labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], 
+                downtown: [420,380,450,520,680,920,580], 
+                mall: [280,320,350,380,420,520,340],
+                suburbs: [180,160,200,240,280,360,220]
             },
             monthly: { 
-                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], 
-                current: [8,10,12,15,17,16,18,20,19,17,16,18], 
-                prev: [6,8,9,12,13,12,14,16,15,14,13,14],
-                title: ['This month', 'Last month']
+                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'], 
+                downtown: [7200,7800,8100,8400,8600,8800,8200,8500], 
+                mall: [4200,4400,4600,4300,4500,4700,4600,4800],
+                suburbs: [2100,2300,2400,2200,2500,2600,2400,2540]
             },
-            yearly:  { 
+            yearly: { 
                 labels: ['2021','2022','2023','2024','2025'], 
-                current: [120,150,180,210,240], 
-                prev: [100,130,160,190,220],
-                title: ['This year', 'Last year']
+                downtown: [85000,92000,98000,102000,98000], 
+                mall: [52000,56000,58000,59000,56000],
+                suburbs: [28000,30000,32000,31000,30000]
             }
         };
 
-        const categories = [
-            { key: 'Housing',        color: '#3B82F6', icon: '🏠' },
-            { key: 'Food',           color: '#22C55E', icon: '🍽️' },
-            { key: 'Transportation', color: '#8B5CF6', icon: '🚗' },
-            { key: 'Entertainment',  color: '#EF4444', icon: '🎬' },
-            { key: 'Shopping',       color: '#F59E0B', icon: '🛒' },
-            { key: 'Others',         color: '#9CA3AF', icon: '📋' }
+        const serviceBreakdown = [
+            { key: 'Haircuts',     color: '#22C55E', icon: '✂️' },
+            { key: 'Beard Care',   color: '#3B82F6', icon: '🧔' },
+            { key: 'Shaving',      color: '#8B5CF6', icon: '🪒' },
+            { key: 'Hair Wash',    color: '#F59E0B', icon: '🚿' },
+            { key: 'Premium',      color: '#EF4444', icon: '👑' },
+            { key: 'Products',     color: '#9CA3AF', icon: '🧴' }
+        ];
+
+        const aiRecommendations = [
+            {
+                type: 'optimization',
+                title: 'Upgrade Hydraulic Chairs',
+                description: 'Your chairs at Downtown location are 5+ years old. Newer models increase customer comfort and reduce maintenance costs by 40%.',
+                impact: 'ROI: +$2,400/year',
+                priority: 'high'
+            },
+            {
+                type: 'warning',
+                title: 'Reduce Premium Shampoo Inventory',
+                description: 'Premium shampoo sales are down 25% this quarter. Consider switching to mid-range products that customers prefer.',
+                impact: 'Save: $300/month',
+                priority: 'medium'
+            },
+            {
+                type: 'opportunity',
+                title: 'Expand Weekend Hours',
+                description: 'Saturday revenue is 35% higher per hour. Adding Sunday hours could increase monthly revenue significantly.',
+                impact: 'Potential: +$1,800/month',
+                priority: 'high'
+            },
+            {
+                type: 'critical',
+                title: 'Mall Location Underperforming',
+                description: 'Mall location revenue down 15% vs last quarter. Consider relocating or renegotiating rent terms.',
+                impact: 'Risk: -$500/month',
+                priority: 'urgent'
+            },
+            {
+                type: 'optimization',
+                title: 'Introduce Loyalty Program',
+                description: 'Customer retention could increase by 30% with a simple punch-card system. Average customer visits would increase.',
+                impact: 'Potential: +$2,200/month',
+                priority: 'medium'
+            },
+            {
+                type: 'opportunity',
+                title: 'Add Beard Oil Sales',
+                description: 'With 98 beard trims monthly, selling beard care products could generate significant additional revenue.',
+                impact: 'Potential: +$980/month',
+                priority: 'high'
+            }
         ];
 
         // Global Variables
-        let currentAccountIndex = 0;
+        let currentLocationIndex = 0;
         let currentTransactionFilter = 'all';
         let currentPeriod = 'weekly';
-        let monthlyGoal = 20000;
+        let monthlyGoal = 18000;
         let goalChart = null;
         let statChart = null;
 
@@ -1077,7 +1363,7 @@
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
-                minimumFractionDigits: 2
+                minimumFractionDigits: 0
             }).format(amount);
         }
 
@@ -1101,39 +1387,40 @@
         // Initialize App
         function init() {
             document.getElementById('currentDate').textContent = getCurrentDate();
-            renderAccountsCard();
+            renderLocationsCard();
             renderTransactions('all');
             renderGoalChart();
             renderStatChart('weekly');
-            renderBreakdown('weekly');
+            renderServiceBreakdown('weekly');
+            renderAIRecommendations();
             setupEventListeners();
         }
 
-        // Account Card Functions
-        function renderAccountsCard() {
-            const totalBalance = accounts.reduce((sum, acc) => sum + acc.amount, 0);
-            const currentAccount = accounts[currentAccountIndex];
+        // Location Card Functions
+        function renderLocationsCard() {
+            const totalRevenue = locations.reduce((sum, loc) => sum + loc.revenue, 0);
+            const currentLocation = locations[currentLocationIndex];
             
-            document.getElementById('totalSum').textContent = formatCurrency(totalBalance);
-            document.getElementById('accountType').textContent = currentAccount.type;
-            document.getElementById('accountId').textContent = currentAccount.id;
-            document.getElementById('accountAmount').textContent = formatCurrency(currentAccount.amount);
+            document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('locationName').textContent = currentLocation.name;
+            document.getElementById('locationAddress').textContent = currentLocation.address;
+            document.getElementById('locationRevenue').textContent = formatCurrency(currentLocation.revenue);
             
             // Update navigation dots
             const dots = document.querySelectorAll('.card-navigation div div');
             dots.forEach((dot, index) => {
-                dot.style.backgroundColor = index === currentAccountIndex ? '#22c55e' : '#e2e8f0';
+                dot.style.backgroundColor = index === currentLocationIndex ? '#22c55e' : '#e2e8f0';
             });
         }
 
-        function nextAccount() {
-            currentAccountIndex = (currentAccountIndex + 1) % accounts.length;
-            renderAccountsCard();
+        function nextLocation() {
+            currentLocationIndex = (currentLocationIndex + 1) % locations.length;
+            renderLocationsCard();
         }
 
-        function prevAccount() {
-            currentAccountIndex = (currentAccountIndex - 1 + accounts.length) % accounts.length;
-            renderAccountsCard();
+        function prevLocation() {
+            currentLocationIndex = (currentLocationIndex - 1 + locations.length) % locations.length;
+            renderLocationsCard();
         }
 
         // Transaction Functions
@@ -1167,10 +1454,8 @@
 
         // Goal Functions
         function calculateAchieved() {
-            const revenueSum = transactions
-                .filter(tx => tx.type === 'revenue')
-                .reduce((sum, tx) => sum + tx.amount, 0);
-            return revenueSum;
+            const totalRevenue = locations.reduce((sum, loc) => sum + loc.revenue, 0);
+            return totalRevenue;
         }
 
         function renderGoalChart() {
@@ -1249,12 +1534,7 @@
         // Statistics Chart Functions
         function renderStatChart(period) {
             currentPeriod = period;
-            const data = series[period];
-            
-            // Update legend
-            const legendItems = document.querySelectorAll('.legend-item span');
-            legendItems[0].textContent = data.title[0];
-            legendItems[1].textContent = data.title[1];
+            const data = locationPerformance[period];
             
             const ctx = document.getElementById('statChart').getContext('2d');
             
@@ -1263,23 +1543,36 @@
             }
             
             statChart = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: data.labels,
                     datasets: [
                         {
-                            label: data.title[0],
-                            data: data.current,
-                            backgroundColor: '#22c55e',
-                            borderRadius: 6,
-                            borderSkipped: false,
+                            label: 'Downtown',
+                            data: data.downtown,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4
                         },
                         {
-                            label: data.title[1],
-                            data: data.prev,
-                            backgroundColor: '#64748b',
-                            borderRadius: 6,
-                            borderSkipped: false,
+                            label: 'Mall',
+                            data: data.mall,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Suburbs',
+                            data: data.suburbs,
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4
                         }
                     ]
                 },
@@ -1300,40 +1593,37 @@
                         },
                         y: {
                             grid: { color: '#f1f5f9' },
-                            ticks: { font: { size: 11 } },
+                            ticks: { 
+                                font: { size: 11 },
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            },
                             beginAtZero: true
                         }
                     },
                     elements: {
-                        bar: { borderRadius: 6 }
+                        point: { radius: 4, hoverRadius: 6 }
                     }
                 }
             });
             
-            renderBreakdown(period);
+            renderServiceBreakdown(period);
         }
 
-        // Breakdown Functions
-        function renderBreakdown(period) {
-            const data = series[period];
-            const totalCurrent = data.current.reduce((a, b) => a + b, 0);
-            
-            const breakdownData = categories.map((category, index) => {
-                const percentage = ((totalCurrent * (0.1 + Math.random() * 0.3)) / 100 * (index + 1));
-                const amount = percentage * 1000;
-                const trend = Math.random() > 0.5 ? 'up' : 'down';
-                const change = Math.floor(Math.random() * 20) + 5;
-                
-                return {
-                    ...category,
-                    amount,
-                    trend,
-                    change
-                };
-            });
+        // Service Breakdown Functions
+        function renderServiceBreakdown(period) {
+            const serviceRevenues = [
+                { ...serviceBreakdown[0], amount: 5250 },
+                { ...serviceBreakdown[1], amount: 1960 },
+                { ...serviceBreakdown[2], amount: 3420 },
+                { ...serviceBreakdown[3], amount: 1860 },
+                { ...serviceBreakdown[4], amount: 3570 },
+                { ...serviceBreakdown[5], amount: 780 }
+            ];
             
             const breakdownList = document.getElementById('breakdownList');
-            breakdownList.innerHTML = breakdownData.map(item => `
+            breakdownList.innerHTML = serviceRevenues.map((item, index) => `
                 <div class="breakdown-item">
                     <div class="category-icon" style="background-color: ${item.color}20; color: ${item.color};">
                         ${item.icon}
@@ -1343,7 +1633,23 @@
                         <div class="category-amount">${formatCurrency(item.amount)}</div>
                     </div>
                     <div class="category-trend">
-                        ${item.trend === 'up' ? '↗' : '↙'}
+                        ${Math.random() > 0.5 ? '↗' : '↙'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // AI Recommendations Functions
+        function renderAIRecommendations() {
+            const recommendationsGrid = document.getElementById('recommendationsGrid');
+            recommendationsGrid.innerHTML = aiRecommendations.map(rec => `
+                <div class="recommendation-card">
+                    <div class="recommendation-type ${rec.type}">${rec.type}</div>
+                    <div class="recommendation-title">${rec.title}</div>
+                    <div class="recommendation-description">${rec.description}</div>
+                    <div class="recommendation-impact">
+                        <span>Impact:</span>
+                        <span class="impact-value">${rec.impact}</span>
                     </div>
                 </div>
             `).join('');
@@ -1351,9 +1657,9 @@
 
         // Event Listeners
         function setupEventListeners() {
-            // Account navigation
-            document.getElementById('prevAcc').addEventListener('click', prevAccount);
-            document.getElementById('nextAcc').addEventListener('click', nextAccount);
+            // Location navigation
+            document.getElementById('prevLocation').addEventListener('click', prevLocation);
+            document.getElementById('nextLocation').addEventListener('click', nextLocation);
             
             // Transaction tabs
             document.getElementById('tabAll').addEventListener('click', () => renderTransactions('all'));

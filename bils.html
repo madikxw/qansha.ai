@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qansha AI - Barbershop Bills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: #000000;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .logo {
+            padding: 0 24px 32px 24px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            margin: 2px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .nav-item.active {
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        .nav-item:hover:not(.active) {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 32px 40px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .greeting-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .greeting {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-right: 16px;
+        }
+        
+        .date {
+            font-size: 14px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            padding: 12px 16px 12px 44px;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            background-color: #ffffff;
+            width: 320px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+        
+        .notification {
+            width: 44px;
+            height: 44px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .notification:hover {
+            background: #f8fafc;
+        }
+        
+        /* Card Styles */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            color: #1e293b;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        
+        /* Bills Table */
+        .bills-table {
+            width: 100%;
+        }
+        
+        .table-header {
+            display: grid;
+            grid-template-columns: 0.8fr 0.8fr 2fr 1fr 1fr;
+            gap: 32px;
+            padding: 20px 0;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 16px;
+        }
+        
+        .header-cell {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .bill-row {
+            display: grid;
+            grid-template-columns: 0.8fr 0.8fr 2fr 1fr 1fr;
+            gap: 32px;
+            padding: 20px 0;
+            border-bottom: 1px solid #f8fafc;
+            align-items: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        
+        .bill-row:hover {
+            background: #f8fafc;
+            margin: 0 -16px;
+            padding: 20px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid transparent;
+        }
+        
+        .due-date-cell {
+            text-align: center;
+        }
+        
+        .date-container {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        
+        .bill-row:hover .date-container {
+            background: #22c55e;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .date-month {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 2px;
+        }
+        
+        .bill-row:hover .date-month {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .date-day {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1;
+        }
+        
+        .bill-row:hover .date-day {
+            color: white;
+        }
+        
+        .logo-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .company-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            transition: all 0.2s ease;
+        }
+        
+        .bill-row:hover .company-logo {
+            transform: scale(1.1);
+        }
+        
+        .electricity-logo {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .rent-logo {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .products-logo {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        
+        .internet-logo {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        }
+        
+        .equipment-logo {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        }
+        
+        .insurance-logo {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+        
+        .description-cell {
+            padding-right: 16px;
+        }
+        
+        .bill-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        
+        .bill-description {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .last-charge-cell {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .amount-cell {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 18px;
+            text-align: right;
+        }
+        
+        .bill-row:hover .amount-cell {
+            color: #22c55e;
+        }
+        
+        /* Action Buttons */
+        .actions-container {
+            margin-top: 32px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background: #22c55e;
+            color: white;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: #16a34a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #ffffff;
+            color: #1e293b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* User Profile */
+        .user-profile {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .user-profile:hover {
+            color: #22c55e;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #22c55e;
+            border-radius: 12px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        
+        .empty-state-text {
+            font-size: 14px;
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+        
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #f1f5f9;
+            border-top: 3px solid #22c55e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-due-soon {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .status-overdue {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .status-paid {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 24px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+            
+            .table-header {
+                display: none;
+            }
+            
+            .bill-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                background: #ffffff;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 16px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            }
+            
+            .bill-row:hover {
+                margin-bottom: 16px;
+            }
+            
+            .mobile-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+            
+            .mobile-label {
+                font-size: 12px;
+                color: #64748b;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+            
+            .due-date-cell {
+                text-align: left;
+            }
+            
+            .actions-container {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">Qansha AI</div>
+            
+            <nav>
+                <a href="main.html" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                    </svg>
+                    Main Page
+                </a>
+                <a href="locations.html" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    Locations & Expenses
+                </a>
+                <a href="bills.html" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20V6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4V4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
+                    </svg>
+                    Bills
+                </a>
+                <a href="upload.html" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <!-- Лоток -->
+                      <path d="M5 20h14v-2H5v2z"/>
+                      <!-- Стрелка вверх -->
+                      <path d="M12 3l-5 5h3v6h4V8h3l-5-5z"/>
+                    </svg>
+                    Upload
+                  </a>
+            </nav>
+            
+            <div class="user-profile">
+                <div class="user-avatar">BS</div>
+                <div>
+                    <div class="user-name">Barbershop Owner</div>
+                    <div class="user-role">View profile</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="greeting-section">
+                    <div class="greeting">Business Bills</div>
+                    <div class="date" id="currentDate"></div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="search-container">
+                        <svg class="search-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search bills..." id="searchInput">
+                    </div>
+                    <div class="notification">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">Upcoming Bills & Recurring Expenses</div>
+                
+                <div class="bills-table">
+                    <div class="table-header">
+                        <div class="header-cell">Due Date</div>
+                        <div class="header-cell">Service</div>
+                        <div class="header-cell">Description</div>
+                        <div class="header-cell">Last Paid</div>
+                        <div class="header-cell" style="text-align: right;">Amount</div>
+                    </div>
+                    
+                    <div id="billsList">
+                        <!-- Bills will be populated by JavaScript -->
+                    </div>
+                    
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">📄</div>
+                        <div class="empty-state-title">No bills found</div>
+                        <div class="empty-state-text">You don't have any upcoming bills at the moment</div>
+                    </div>
+                    
+                    <div id="loadingState" class="loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+                
+                <div class="actions-container">
+                    <button class="action-btn btn-secondary" id="addBillBtn">Add New Bill</button>
+                    <button class="action-btn btn-primary" id="payAllBtn">Pay All Bills</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Barbershop Bills Data
+        const allBills = [
+            {
+                id: 1,
+                company: 'Electric Company',
+                plan: 'Electricity Bill - All Locations',
+                description: 'Monthly electricity bill for Downtown, Mall, and Suburbs barbershop locations including lighting, clippers, and AC',
+                dueDate: { month: 'Aug', day: '25' },
+                lastCharge: 'July 25, 2025',
+                amount: 520,
+                status: 'due-soon',
+                logo: 'electricity-logo'
+            },
+            {
+                id: 2,
+                company: 'Property Management',
+                plan: 'Rent - Downtown Location',
+                description: 'Monthly rent for main downtown barbershop location at 123 Main Street, includes utilities and parking',
+                dueDate: { month: 'Sep', day: '01' },
+                lastCharge: 'Aug 01, 2025',
+                amount: 2800,
+                status: 'upcoming',
+                logo: 'rent-logo'
+            },
+            {
+                id: 3,
+                company: 'Hair Supply Co.',
+                plan: 'Professional Products - Monthly',
+                description: 'Premium hair products, styling gels, shampoos, conditioners, and beard care products for all locations',
+                dueDate: { month: 'Aug', day: '30' },
+                lastCharge: 'July 30, 2025',
+                amount: 450,
+                status: 'due-soon',
+                logo: 'products-logo'
+            },
+            {
+                id: 4,
+                company: 'Internet Provider',
+                plan: 'Business Internet - 3 Locations',
+                description: 'High-speed internet service for appointment booking system, POS, and customer WiFi across all locations',
+                dueDate: { month: 'Aug', day: '28' },
+                lastCharge: 'July 28, 2025',
+                amount: 180,
+                status: 'due-soon',
+                logo: 'internet-logo'
+            },
+            {
+                id: 5,
+                company: 'Equipment Lease',
+                plan: 'Hydraulic Chairs - Lease Payment',
+                description: 'Monthly lease payment for professional hydraulic barber chairs and styling stations (8 chairs total)',
+                dueDate: { month: 'Sep', day: '05' },
+                lastCharge: 'Aug 05, 2025',
+                amount: 680,
+                status: 'upcoming',
+                logo: 'equipment-logo'
+            },
+                            {
+                id: 6,
+                company: 'Business Insurance',
+                plan: 'General Liability Insurance',
+                description: 'Comprehensive business insurance covering all locations, equipment, and professional liability',
+                dueDate: { month: 'Sep', day: '15' },
+                lastCharge: 'June 15, 2025',
+                amount: 320,
+                status: 'upcoming',
+                logo: 'insurance-logo'
+            }
+        ];
+
+        // Application State
+        let isSearching = false;
+        let searchResults = [];
+
+        // Utility Functions
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function getCurrentDate() {
+            return new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }).format(new Date());
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function getLogoClass(logoType) {
+            const logoClasses = {
+                'electricity-logo': 'electricity-logo',
+                'rent-logo': 'rent-logo',
+                'products-logo': 'products-logo',
+                'internet-logo': 'internet-logo',
+                'equipment-logo': 'equipment-logo',
+                'insurance-logo': 'insurance-logo'
+            };
+            return logoClasses[logoType] || 'electricity-logo';
+        }
+
+        function getLogoText(company) {
+            const logoTexts = {
+                'Electric Company': '⚡',
+                'Property Management': '🏠',
+                'Hair Supply Co.': '🧴',
+                'Internet Provider': '📶',
+                'Equipment Lease': '🪑',
+                'Business Insurance': '🛡️'
+            };
+            return logoTexts[company] || company.charAt(0);
+        }
+
+        // Create bill row HTML
+        function createBillRow(bill, isMobile = false) {
+            if (isMobile) {
+                return `
+                    <div class="bill-row mobile-bill" data-id="${bill.id}">
+                        <div class="mobile-row">
+                            <span class="mobile-label">Due Date:</span>
+                            <div class="due-date-cell">
+                                <div class="date-container">
+                                    <div class="date-month">${bill.dueDate.month}</div>
+                                    <div class="date-day">${bill.dueDate.day}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mobile-row">
+                            <div class="company-logo ${getLogoClass(bill.logo)}">${getLogoText(bill.company)}</div>
+                            <div class="description-cell">
+                                <div class="bill-title">${bill.plan}</div>
+                                <div class="bill-description">${bill.description}</div>
+                            </div>
+                        </div>
+                        <div class="mobile-row">
+                            <span class="mobile-label">Last Paid:</span>
+                            <span class="last-charge-cell">${bill.lastCharge}</span>
+                        </div>
+                        <div class="mobile-row">
+                            <span class="mobile-label">Amount:</span>
+                            <span class="amount-cell">${formatCurrency(bill.amount)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="bill-row" data-id="${bill.id}">
+                    <div class="due-date-cell">
+                        <div class="date-container">
+                            <div class="date-month">${bill.dueDate.month}</div>
+                            <div class="date-day">${bill.dueDate.day}</div>
+                        </div>
+                    </div>
+                    <div class="logo-cell">
+                        <div class="company-logo ${getLogoClass(bill.logo)}">${getLogoText(bill.company)}</div>
+                    </div>
+                    <div class="description-cell">
+                        <div class="bill-title">${bill.plan}</div>
+                        <div class="bill-description">${bill.description}</div>
+                    </div>
+                    <div class="last-charge-cell">${bill.lastCharge}</div>
+                    <div class="amount-cell">${formatCurrency(bill.amount)}</div>
+                </div>
+            `;
+        }
+
+        // Render bills
+        function renderBills() {
+            const isMobile = window.innerWidth <= 768;
+            
+            let billsToRender = isSearching ? searchResults : allBills;
+            
+            const billsList = document.getElementById('billsList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (billsToRender.length === 0) {
+                billsList.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            billsList.innerHTML = billsToRender
+                .map(bill => createBillRow(bill, isMobile))
+                .join('');
+        }
+
+        // Search functionality
+        function searchBills(query) {
+            if (!query.trim()) {
+                isSearching = false;
+                searchResults = [];
+                renderBills();
+                return;
+            }
+            
+            isSearching = true;
+            const searchTerm = query.toLowerCase();
+            
+            searchResults = allBills.filter(bill => {
+                return bill.company.toLowerCase().includes(searchTerm) ||
+                    bill.plan.toLowerCase().includes(searchTerm) ||
+                    bill.description.toLowerCase().includes(searchTerm) ||
+                    bill.dueDate.month.toLowerCase().includes(searchTerm);
+            });
+            
+            renderBills();
+        }
+
+        // Show loading state
+        function showLoading() {
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('billsList').style.display = 'none';
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('billsList').style.display = 'block';
+        }
+
+        // Show bill details
+        function showBillDetails(bill) {
+            alert(`Bill Details:\n\nService: ${bill.company}\nDescription: ${bill.plan}\nAmount: ${formatCurrency(bill.amount)}\nDue: ${bill.dueDate.month} ${bill.dueDate.day}\nLast Paid: ${bill.lastCharge}\n\nDetails: ${bill.description}`);
+        }
+
+        // Add new bill
+        function addNewBill() {
+            alert('Add New Bill functionality would open a form here to add business expenses like:\n\n• New equipment purchases\n• Additional insurance\n• Marketing subscriptions\n• Professional services\n• Maintenance contracts');
+        }
+
+        // Pay all bills
+        function payAllBills() {
+            const totalAmount = allBills.reduce((sum, bill) => sum + bill.amount, 0);
+            const confirmed = confirm(`Are you sure you want to pay all upcoming bills?\n\nTotal Amount: ${formatCurrency(totalAmount)}\n\nThis includes:\n• Electricity\n• Rent\n• Products\n• Internet\n• Equipment Lease\n• Insurance`);
+            
+            if (confirmed) {
+                showLoading();
+                setTimeout(() => {
+                    hideLoading();
+                    alert('All business bills have been paid successfully!\n\nPayments processed for all barbershop locations.');
+                }, 2000);
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Search functionality with debouncing
+            const searchInput = document.getElementById('searchInput');
+            const debouncedSearch = debounce((query) => {
+                searchBills(query);
+            }, 300);
+            
+            searchInput.addEventListener('input', (e) => {
+                debouncedSearch(e.target.value);
+            });
+            
+            // Clear search on escape
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    e.target.value = '';
+                    isSearching = false;
+                    searchResults = [];
+                    renderBills();
+                }
+            });
+            
+            // Action buttons
+            document.getElementById('addBillBtn').addEventListener('click', addNewBill);
+            document.getElementById('payAllBtn').addEventListener('click', payAllBills);
+            
+            // Responsive handling
+            window.addEventListener('resize', debounce(() => {
+                renderBills();
+            }, 250));
+            
+            // Bill row click handlers
+            document.addEventListener('click', (e) => {
+                const billRow = e.target.closest('.bill-row');
+                if (billRow && billRow.dataset.id) {
+                    const billId = parseInt(billRow.dataset.id);
+                    const bill = allBills.find(b => b.id === billId);
+                    if (bill) {
+                        showBillDetails(bill);
+                    }
+                }
+            });
+        }
+
+        // Initialize the application
+        function init() {
+            document.getElementById('currentDate').textContent = getCurrentDate();
+            setupEventListeners();
+            renderBills();
+            
+            // Simulate initial loading
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+            }, 800);
+        }
+
+        // Start the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Handle mobile sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Add mobile menu button for smaller screens
+        if (window.innerWidth <= 768) {
+            const headerRight = document.querySelector('.header-right');
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.innerHTML = '☰';
+            mobileMenuBtn.style.cssText = `
+                background: none;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                color: #1e293b;
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            `;
+            mobileMenuBtn.addEventListener('click', toggleSidebar);
+            mobileMenuBtn.addEventListener('mouseenter', () => {
+                mobileMenuBtn.style.background = '#f8fafc';
+            });
+            mobileMenuBtn.addEventListener('mouseleave', () => {
+                mobileMenuBtn.style.background = 'none';
+            });
+            headerRight.appendChild(mobileMenuBtn);
+        }
+    </script>
+</body>
+</html>
