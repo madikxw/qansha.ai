@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qansha AI - Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.5;
+        }
+        
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: #000000;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 24px 32px 24px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            margin: 2px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .nav-item.active {
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        .nav-item:hover:not(.active) {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 32px 40px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .greeting-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .greeting {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-right: 16px;
+        }
+        
+        .date {
+            font-size: 14px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            padding: 12px 16px 12px 44px;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            background-color: #ffffff;
+            width: 320px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+        
+        .notification {
+            width: 44px;
+            height: 44px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .notification:hover {
+            background: #f8fafc;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+        
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .balance-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        
+        .credit-card {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .card-type {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .card-number {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 16px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .card-amount {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .card-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 32px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .card-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+        
+        .nav-button {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .nav-button:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .goal-content {
+            text-align: center;
+        }
+        
+        .goal-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .goal-amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .goal-edit {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .goal-period {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        
+        .goal-chart {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .goal-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .goal-stat {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .achieved-amount {
+            color: #22c55e;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .bill-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .bill-item:last-child {
+            border-bottom: none;
+        }
+        
+        .bill-date {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-right: 16px;
+            min-width: 60px;
+        }
+        
+        .bill-day {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1;
+        }
+        
+        .bill-month {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .bill-info {
+            flex: 1;
+        }
+        
+        .bill-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .bill-type {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 2px;
+        }
+        
+        .bill-last-charge {
+            font-size: 10px;
+            color: #94a3b8;
+        }
+        
+        .bill-amount {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 16px;
+        }
+        
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .tab {
+            color: #64748b;
+            padding: 12px 0;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: #22c55e;
+            border-bottom-color: #22c55e;
+        }
+        
+        .tab:hover:not(.active) {
+            color: #1e293b;
+        }
+        
+        .transaction-list {
+            max-height: 420px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #e2e8f0 transparent;
+        }
+        
+        .transaction-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 3px;
+        }
+        
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f8fafc;
+            transition: all 0.2s;
+        }
+        
+        .transaction-item:hover {
+            background: #f8fafc;
+            margin: 0 -8px;
+            padding: 16px 8px;
+            border-radius: 12px;
+        }
+        
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 18px;
+        }
+        
+        .transaction-details {
+            flex: 1;
+        }
+        
+        .transaction-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .transaction-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .transaction-right {
+            text-align: right;
+        }
+        
+        .transaction-amount {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .transaction-amount.revenue {
+            color: #22c55e;
+        }
+        
+        .transaction-amount.expense {
+            color: #ef4444;
+        }
+        
+        .transaction-date {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .period-select {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .period-select:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        
+        .chart-container {
+            height: 220px;
+            margin-bottom: 24px;
+        }
+        
+        .breakdown-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        
+        .breakdown-item:hover {
+            background: #f1f5f9;
+        }
+        
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .breakdown-details {
+            flex: 1;
+        }
+        
+        .category-name {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .category-amount {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .category-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+        }
+        
+        .user-profile {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .user-profile:hover {
+            color: #22c55e;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #22c55e;
+            border-radius: 12px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        /* Goal Input Modal */
+        .goal-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .goal-modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            width: 400px;
+            max-width: 90vw;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .goal-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .goal-input:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #16a34a;
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bottom-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .breakdown-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+        
+        .view-all {
+            color: #64748b;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .view-all:hover {
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">Qansha AI</div>
+            
+            <nav>
+                <a href="#" class="nav-item active">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                    </svg>
+                    Overview
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    Balances
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20V6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4V4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
+                    </svg>
+                    Transactions
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                    Bills
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7,15H9C9,16.08 10.37,17 12,17C13.63,17 15,16.08 15,15C15,13.9 13.96,13.5 11.76,12.97C9.64,12.44 7,11.78 7,9C7,7.21 8.47,5.69 10.5,5.18V3H13.5V5.18C15.53,5.69 17,7.21 17,9H15C15,7.92 13.63,7 12,7C10.37,7 9,7.92 9,9C9,10.1 10.04,10.5 12.24,11.03C14.36,11.56 17,12.22 17,15C17,16.79 15.53,18.31 13.5,18.82V21H10.5V18.82C8.47,18.31 7,16.79 7,15Z"/>
+                    </svg>
+                    Expenses
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"/>
+                    </svg>
+                    Goals
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.98C19.47,12.66 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.02L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.02C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.66 4.57,12.98L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.98Z"/>
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+            
+            <div class="user-profile">
+                <div class="user-avatar">UU</div>
+                <div>
+                    <div class="user-name">User Userov</div>
+                    <div class="user-role">View profile</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <div class="greeting-section">
+                    <div class="greeting">Hello User</div>
+                    <div class="date" id="currentDate"></div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="search-container">
+                        <svg class="search-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search here">
+                    </div>
+                    <div class="notification">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-title">Total Balance</div>
+                    <div class="balance-amount" id="totalSum">$42,400.00</div>
+                    <div class="balance-subtitle">All Accounts</div>
+                    
+                    <div class="credit-card">
+                        <div class="card-type">Account Type</div>
+                        <div class="card-label" id="accountType">Credit Card</div>
+                        <div class="card-number" id="accountId">**** **** **** 2598</div>
+                        <div class="card-amount" id="accountAmount">$25,000.00</div>
+                        <div class="card-logo">VISA</div>
+                    </div>
+                    
+                    <div class="card-navigation">
+                        <button class="nav-button" id="prevAcc">← Previous</button>
+                        <div style="display: flex; gap: 8px;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #e2e8f0;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #e2e8f0;"></div>
+                        </div>
+                        <button class="nav-button" id="nextAcc">Next →</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Goals</div>
+                    <div class="goal-content">
+                        <div class="goal-header">
+                            <div class="goal-amount" id="goalTarget">$20,000.00</div>
+                            <button class="goal-edit" id="goalEditBtn">✏️</button>
+                        </div>
+                        <div class="goal-period">May, 2023</div>
+                        
+                        <div class="goal-chart">
+                            <canvas id="goalChart" width="140" height="140"></canvas>
+                        </div>
+                        
+                        <div class="goal-stats">
+                            <div class="achieved-amount" id="goalAchieved">$12,500.00</div>
+                            <div class="goal-stat">
+                                <span>🎯</span>
+                                <span>Target Achieved</span>
+                            </div>
+                            <div class="goal-stat">
+                                <span>📊</span>
+                                <span>This month Target</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Upcoming Bill</div>
+                    
+                    <div id="billsList">
+                        <div class="bill-item">
+                            <div class="bill-date">
+                                <div class="bill-day">15</div>
+                                <div class="bill-month">May</div>
+                            </div>
+                            <div class="bill-info">
+                                <div class="bill-name">Figma</div>
+                                <div class="bill-type">Figma - Monthly</div>
+                                <div class="bill-last-charge">Last Charge - 14 May, 2023</div>
+                            </div>
+                            <div class="bill-amount">$150</div>
+                        </div>
+                        
+                        <div class="bill-item">
+                            <div class="bill-date">
+                                <div class="bill-day">16</div>
+                                <div class="bill-month">Jun</div>
+                            </div>
+                            <div class="bill-info">
+                                <div class="bill-name">Adobe</div>
+                                <div class="bill-type">Adobe - Yearly</div>
+                                <div class="bill-last-charge">Last Charge - 17 Jun, 2023</div>
+                            </div>
+                            <div class="bill-amount">$559</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bottom-section">
+                <div class="card">
+                    <div class="transactions-header">
+                        <div class="card-title">Recent Transaction</div>
+                        <div class="view-all">View All</div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" id="tabAll">All</div>
+                        <div class="tab" id="tabRevenue">Revenue</div>
+                        <div class="tab" id="tabExpenses">Expenses</div>
+                    </div>
+                    
+                    <div class="transaction-list" id="txList">
+                        <!-- Transactions will be populated by JS -->
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="stats-header">
+                        <div class="card-title">Statistics</div>
+                        <select class="period-select" id="periodSelect">
+                            <option value="weekly">Weekly Comparison</option>
+                            <option value="monthly">Monthly Comparison</option>
+                            <option value="yearly">Yearly Comparison</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #22c55e;"></div>
+                            <span>This week</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #64748b;"></div>
+                            <span>Last week</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="statChart"></canvas>
+                    </div>
+                    
+                    <div class="card-title" style="margin-bottom: 16px;">Expenses Breakdown</div>
+                    <div class="breakdown-list" id="breakdownList">
+                        <!-- Breakdown items will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Goal Modal -->
+    <div class="goal-modal" id="goalModal">
+        <div class="modal-content">
+            <div class="modal-title">Set Monthly Goal</div>
+            <input type="number" class="goal-input" id="goalInput" placeholder="Enter amount (e.g. 25000)">
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="goalCancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="goalSetBtn">Set Goal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo Data
+        const accounts = [
+            { id: '**** **** **** 2598', type: 'Credit Card', amount: 25000 },
+            { id: '**** **** **** 4412', type: 'Debit Card',  amount: 12000 },
+            { id: '**** **** **** 7721', type: 'Checking',    amount: 5400  }
+        ];
+
+        const transactions = [
+            { id: 1, title: 'GTR 5',        subtitle: 'Gadget & Gear',  date: '2023-05-17', amount: 160,  type: 'expense', icon: '🏎️' },
+            { id: 2, title: 'Polo Shirt',   subtitle: 'XL fashions',    date: '2023-05-17', amount: 20,   type: 'expense', icon: '👕' },
+            { id: 3, title: 'Biriyani',     subtitle: 'Food Biriyani',  date: '2023-05-17', amount: 10,   type: 'expense', icon: '🍛' },
+            { id: 4, title: 'Taxi Fare',    subtitle: 'Uber',           date: '2023-05-17', amount: 12,   type: 'expense', icon: '🚗' },
+            { id: 5, title: 'Keyboard',     subtitle: 'Gadget & Gear',  date: '2023-05-17', amount: 22,   type: 'expense', icon: '⌨️' },
+            { id: 6, title: 'Order Payout', subtitle: 'Online Sales',   date: '2023-05-18', amount: 450,  type: 'revenue', icon: '💰' },
+            { id: 7, title: 'Freelance Work', subtitle: 'Design Project', date: '2023-05-18', amount: 800, type: 'revenue', icon: '💼' },
+            { id: 8, title: 'Coffee Shop',  subtitle: 'Starbucks',      date: '2023-05-16', amount: 5,    type: 'expense', icon: '☕' }
+        ];
+
+        const upcomingBills = [
+            { due: '2023-05-15', vendor: 'Figma',  plan: 'Monthly', amount: 150 },
+            { due: '2023-06-16', vendor: 'Adobe',  plan: 'Yearly',  amount: 559 }
+        ];
+
+        const series = {
+            weekly:  { 
+                labels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], 
+                current: [24,12,15,18,22,26,24], 
+                prev: [14,10,9,12,18,16,15],
+                title: ['This week', 'Last week']
+            },
+            monthly: { 
+                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], 
+                current: [8,10,12,15,17,16,18,20,19,17,16,18], 
+                prev: [6,8,9,12,13,12,14,16,15,14,13,14],
+                title: ['This month', 'Last month']
+            },
+            yearly:  { 
+                labels: ['2021','2022','2023','2024','2025'], 
+                current: [120,150,180,210,240], 
+                prev: [100,130,160,190,220],
+                title: ['This year', 'Last year']
+            }
+        };
+
+        const categories = [
+            { key: 'Housing',        color: '#3B82F6', icon: '🏠' },
+            { key: 'Food',           color: '#22C55E', icon: '🍽️' },
+            { key: 'Transportation', color: '#8B5CF6', icon: '🚗' },
+            { key: 'Entertainment',  color: '#EF4444', icon: '🎬' },
+            { key: 'Shopping',       color: '#F59E0B', icon: '🛒' },
+            { key: 'Others',         color: '#9CA3AF', icon: '📋' }
+        ];
+
+        // Global Variables
+        let currentAccountIndex = 0;
+        let currentTransactionFilter = 'all';
+        let currentPeriod = 'weekly';
+        let monthlyGoal = 20000;
+        let goalChart = null;
+        let statChart = null;
+
+        // Utility Functions
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return new Intl.DateTimeFormat('en-US', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            }).format(date);
+        }
+
+        function getCurrentDate() {
+            return new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }).format(new Date());
+        }
+
+        // Initialize App
+        function init() {
+            document.getElementById('currentDate').textContent = getCurrentDate();
+            renderAccountsCard();
+            renderTransactions('all');
+            renderGoalChart();
+            renderStatChart('weekly');
+            renderBreakdown('weekly');
+            setupEventListeners();
+        }
+
+        // Account Card Functions
+        function renderAccountsCard() {
+            const totalBalance = accounts.reduce((sum, acc) => sum + acc.amount, 0);
+            const currentAccount = accounts[currentAccountIndex];
+            
+            document.getElementById('totalSum').textContent = formatCurrency(totalBalance);
+            document.getElementById('accountType').textContent = currentAccount.type;
+            document.getElementById('accountId').textContent = currentAccount.id;
+            document.getElementById('accountAmount').textContent = formatCurrency(currentAccount.amount);
+            
+            // Update navigation dots
+            const dots = document.querySelectorAll('.card-navigation div div');
+            dots.forEach((dot, index) => {
+                dot.style.backgroundColor = index === currentAccountIndex ? '#22c55e' : '#e2e8f0';
+            });
+        }
+
+        function nextAccount() {
+            currentAccountIndex = (currentAccountIndex + 1) % accounts.length;
+            renderAccountsCard();
+        }
+
+        function prevAccount() {
+            currentAccountIndex = (currentAccountIndex - 1 + accounts.length) % accounts.length;
+            renderAccountsCard();
+        }
+
+        // Transaction Functions
+        function renderTransactions(filter) {
+            currentTransactionFilter = filter;
+            const filteredTransactions = filter === 'all' 
+                ? transactions 
+                : transactions.filter(tx => tx.type === filter);
+            
+            const txList = document.getElementById('txList');
+            txList.innerHTML = filteredTransactions.map(tx => `
+                <div class="transaction-item">
+                    <div class="transaction-icon">${tx.icon}</div>
+                    <div class="transaction-details">
+                        <div class="transaction-name">${tx.title}</div>
+                        <div class="transaction-subtitle">${tx.subtitle}</div>
+                    </div>
+                    <div class="transaction-right">
+                        <div class="transaction-amount ${tx.type}">
+                            ${tx.type === 'revenue' ? '+' : '-'}${formatCurrency(tx.amount)}
+                        </div>
+                        <div class="transaction-date">${formatDate(tx.date)}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update tab active state
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab${filter === 'all' ? 'All' : filter === 'revenue' ? 'Revenue' : 'Expenses'}`).classList.add('active');
+        }
+
+        // Goal Functions
+        function calculateAchieved() {
+            const revenueSum = transactions
+                .filter(tx => tx.type === 'revenue')
+                .reduce((sum, tx) => sum + tx.amount, 0);
+            return revenueSum;
+        }
+
+        function renderGoalChart() {
+            const achieved = calculateAchieved();
+            const percentage = Math.min((achieved / monthlyGoal) * 100, 100);
+            
+            document.getElementById('goalTarget').textContent = formatCurrency(monthlyGoal);
+            document.getElementById('goalAchieved').textContent = formatCurrency(achieved);
+            
+            const ctx = document.getElementById('goalChart').getContext('2d');
+            
+            if (goalChart) {
+                goalChart.destroy();
+            }
+            
+            goalChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [percentage, 100 - percentage],
+                        backgroundColor: ['#22c55e', '#f1f5f9'],
+                        borderWidth: 0,
+                        cutout: '75%'
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                },
+                plugins: [{
+                    beforeDraw: function(chart) {
+                        const width = chart.width;
+                        const height = chart.height;
+                        const ctx = chart.ctx;
+                        
+                        ctx.restore();
+                        const fontSize = (height / 114).toFixed(2);
+                        ctx.font = `bold ${fontSize * 24}px Inter`;
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = '#1e293b';
+                        
+                        const text = Math.round(percentage) + '%';
+                        const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                        const textY = height / 2;
+                        
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }]
+            });
+        }
+
+        function showGoalModal() {
+            document.getElementById('goalModal').classList.add('show');
+            document.getElementById('goalInput').value = monthlyGoal;
+            document.getElementById('goalInput').focus();
+        }
+
+        function hideGoalModal() {
+            document.getElementById('goalModal').classList.remove('show');
+        }
+
+        function setGoal() {
+            const newGoal = parseFloat(document.getElementById('goalInput').value);
+            if (newGoal && newGoal > 0) {
+                monthlyGoal = newGoal;
+                renderGoalChart();
+                hideGoalModal();
+            }
+        }
+
+        // Statistics Chart Functions
+        function renderStatChart(period) {
+            currentPeriod = period;
+            const data = series[period];
+            
+            // Update legend
+            const legendItems = document.querySelectorAll('.legend-item span');
+            legendItems[0].textContent = data.title[0];
+            legendItems[1].textContent = data.title[1];
+            
+            const ctx = document.getElementById('statChart').getContext('2d');
+            
+            if (statChart) {
+                statChart.destroy();
+            }
+            
+            statChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: data.title[0],
+                            data: data.current,
+                            backgroundColor: '#22c55e',
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        },
+                        {
+                            label: data.title[1],
+                            data: data.prev,
+                            backgroundColor: '#64748b',
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11 } }
+                        },
+                        y: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { size: 11 } },
+                            beginAtZero: true
+                        }
+                    },
+                    elements: {
+                        bar: { borderRadius: 6 }
+                    }
+                }
+            });
+            
+            renderBreakdown(period);
+        }
+
+        // Breakdown Functions
+        function renderBreakdown(period) {
+            const data = series[period];
+            const totalCurrent = data.current.reduce((a, b) => a + b, 0);
+            
+            const breakdownData = categories.map((category, index) => {
+                const percentage = ((totalCurrent * (0.1 + Math.random() * 0.3)) / 100 * (index + 1));
+                const amount = percentage * 1000;
+                const trend = Math.random() > 0.5 ? 'up' : 'down';
+                const change = Math.floor(Math.random() * 20) + 5;
+                
+                return {
+                    ...category,
+                    amount,
+                    trend,
+                    change
+                };
+            });
+            
+            const breakdownList = document.getElementById('breakdownList');
+            breakdownList.innerHTML = breakdownData.map(item => `
+                <div class="breakdown-item">
+                    <div class="category-icon" style="background-color: ${item.color}20; color: ${item.color};">
+                        ${item.icon}
+                    </div>
+                    <div class="breakdown-details">
+                        <div class="category-name">${item.key}</div>
+                        <div class="category-amount">${formatCurrency(item.amount)}</div>
+                    </div>
+                    <div class="category-trend">
+                        ${item.trend === 'up' ? '↗' : '↙'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Account navigation
+            document.getElementById('prevAcc').addEventListener('click', prevAccount);
+            document.getElementById('nextAcc').addEventListener('click', nextAccount);
+            
+            // Transaction tabs
+            document.getElementById('tabAll').addEventListener('click', () => renderTransactions('all'));
+            document.getElementById('tabRevenue').addEventListener('click', () => renderTransactions('revenue'));
+            document.getElementById('tabExpenses').addEventListener('click', () => renderTransactions('expense'));
+            
+            // Goal modal
+            document.getElementById('goalEditBtn').addEventListener('click', showGoalModal);
+            document.getElementById('goalCancelBtn').addEventListener('click', hideGoalModal);
+            document.getElementById('goalSetBtn').addEventListener('click', setGoal);
+            
+            // Goal modal close on outside click
+            document.getElementById('goalModal').addEventListener('click', (e) => {
+                if (e.target.id === 'goalModal') hideGoalModal();
+            });
+            
+            // Goal input enter key
+            document.getElementById('goalInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') setGoal();
+            });
+            
+            // Period selection
+            document.getElementById('periodSelect').addEventListener('change', (e) => {
+                renderStatChart(e.target.value);
+            });
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
